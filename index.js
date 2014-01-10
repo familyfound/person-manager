@@ -33,4 +33,16 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     }
     this.io.emit('getsome', id, gens, npeople, done)
   },
+  set: function (id, data, done) {
+    console.error('tried to set', id, data)
+  },
+  setAttr: function (id, attr, data, done) {
+    if (attr !== 'data') 
+    console.error('tried to set', id, attr, data)
+  },
+  setCompleted: function (id, val) {
+    this.io.emit('completed', id, val, function (person) {
+      this.got(id, person)
+    }.bind(this))
+  }
 })
