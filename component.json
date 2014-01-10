@@ -1,0 +1,17 @@
+{
+  "name": "person-manager",
+  "repo": "familyfound/person-manager",
+  "description": "Manage the persons",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "notablemind/manager": "*",
+    "lodash/lodash": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js"
+  ]
+}
