@@ -41,8 +41,23 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     console.error('tried to set', id, attr, data)
   },
   setCompleted: function (id, val) {
-    this.io.emit('completed', id, val, function (person) {
-      this.got(id, person)
+    this.io.emit('set:completed', id, val, function (person) {
+      if (person) this.got(id, person)
+    }.bind(this))
+  },
+  setStarred: function (id, val) {
+    this.io.emit('set:starred', id, val, function (person) {
+      if (person) this.got(id, person)
+    }.bind(this))
+  },
+  setTodoDone: function (id, type, val) {
+    this.io.emit('set:todo:done', id, type, val, function (person) {
+      if (person) this.got(id, person)
+    }.bind(this))
+  },
+  setTodoHard: function (id, type, val) {
+    this.io.emit('set:todo:hard', id, type, val, function (person) {
+      if (person) this.got(id, person)
     }.bind(this))
   }
 })
