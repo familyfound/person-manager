@@ -40,24 +40,30 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     if (attr !== 'data') 
     console.error('tried to set', id, attr, data)
   },
+  gotData: function (id, data) {
+    var person = this._map[id]
+    person.data = data
+    this.got(id, person)
+  },
   setCompleted: function (id, val) {
     this.io.emit('set:completed', id, val, function (person) {
-      if (person) this.got(id, person)
+      if (person) this.gotData(id, person)
     }.bind(this))
   },
   setStarred: function (id, val) {
     this.io.emit('set:starred', id, val, function (person) {
-      if (person) this.got(id, person)
+      if (person) this.gotData(id, person)
     }.bind(this))
   },
   setTodoDone: function (id, type, val) {
     this.io.emit('set:todo:done', id, type, val, function (person) {
-      if (person) this.got(id, person)
+      if (person) this.gotData(id, person)
     }.bind(this))
   },
   setTodoHard: function (id, type, val) {
     this.io.emit('set:todo:hard', id, type, val, function (person) {
-      if (person) this.got(id, person)
+      if (person) this.gotData(id, person)
     }.bind(this))
   }
 })
+
