@@ -22,16 +22,13 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     this.io.on('person', function (id, person) {
       that.got(id, person)
     })
-    this.io.on('more_person', function (id, person) {
+    this.io.on('person:more', function (id, person) {
       that.got(id, person)
     })
   },
-  load: function (id, gens, npeople, dtree, dcraw) {
-    function done(){
-      dtree()
-      dcraw()
-    }
-    this.io.emit('getsome', id, gens, npeople, done)
+  load: function (id, gens, npeople) {
+    this.io.emit('get:pedigree', id, gens)
+    this.io.emit('get:todos', id, npeople)
   },
   set: function (id, data, done) {
     console.error('tried to set', id, data)
