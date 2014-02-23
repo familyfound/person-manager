@@ -2,10 +2,10 @@
   "name": "person-manager",
   "repo": "familyfound/person-manager",
   "description": "Manage the persons",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [],
   "dependencies": {
-    "notablemind/manager": "*",
+    "notablemind/manager": "1.0.0",
     "lodash/lodash": "*"
   },
   "development": {},
