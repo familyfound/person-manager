@@ -23,7 +23,11 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
       that.got(id, person)
     })
     this.io.on('person:more', function (id, person) {
+      person.loading = false
       that.got(id, person)
+    })
+    this.io.on('person:loading', function (id) {
+      that.got(id, {loading: true})
     })
   },
   load: function (id, gens, npeople) {
@@ -42,6 +46,11 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     person.data = data
     this.got(id, person)
   },
+  setNote: function (id, text) {
+    this.io.emit('set:note', id, text, function (person) {
+      if (person) this.gotData(id, person)
+    }.bind(this))
+  },
   setCompleted: function (id, val) {
     this.io.emit('set:completed', id, val, function (person) {
       if (person) this.gotData(id, person)
@@ -52,13 +61,13 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
       if (person) this.gotData(id, person)
     }.bind(this))
   },
-  setTodoDone: function (id, type, val) {
-    this.io.emit('set:todo:done', id, type, val, function (person) {
+  setTodoDone: function (id, type, key, val) {
+    this.io.emit('set:todo:done', id, type, key, val, function (person) {
       if (person) this.gotData(id, person)
     }.bind(this))
   },
-  setTodoHard: function (id, type, val) {
-    this.io.emit('set:todo:hard', id, type, val, function (person) {
+  setTodoHard: function (id, type, key, val) {
+    this.io.emit('set:todo:hard', id, type, key, val, function (person) {
       if (person) this.gotData(id, person)
     }.bind(this))
   }
