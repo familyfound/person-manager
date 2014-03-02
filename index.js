@@ -35,12 +35,13 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     this.io.on('history:item', function (item) {
       if (!that._map.history) that._map.history = {items:[]}
       if (!that._map.history.items) that._map.history.items = []
-      that._map.history.items.push(item)
+      that._map.history.items.unshift(item)
       that.trigger('history', that._map.history)
     })
     this.io.on('starred', function (items) {
       var ids = items.map(function (item) {
         that.got(item.id, {data: item})
+        return item.id
       })
       that.got('starred', {ids: ids})
     })
@@ -75,6 +76,7 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
   },
   setStarred: function (id, val) {
     this.io.emit('set:starred', id, val, function (person) {
+      this.updateStars(id, val)
       if (person) this.gotData(id, person)
     }.bind(this))
   },
@@ -87,6 +89,19 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     this.io.emit('set:todo:hard', id, type, key, val, function (person) {
       if (person) this.gotData(id, person)
     }.bind(this))
+  },
+
+  updateStars: function (id, val) {
+    var ids = this._map.starred.ids
+    if (!val) {
+      var idx = ids.indexOf(id)
+      if (idx !== -1) {
+        ids.splice(idx, 1)
+      }
+    } else {
+      ids.unshift(id)
+    }
+    this.got('starred', {ids: ids})
   }
 })
 
