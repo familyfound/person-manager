@@ -29,7 +29,23 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     this.io.on('person:loading', function (id) {
       that.got(id, {loading: true})
     })
+    this.io.on('history', function (items) {
+      that.got('history', {items: items})
+    })
+    this.io.on('history:item', function (item) {
+      if (!that._map.history) that._map.history = {items:[]}
+      if (!that._map.history.items) that._map.history.items = []
+      that._map.history.items.push(item)
+      that.trigger('history', that._map.history)
+    })
+    this.io.on('starred', function (items) {
+      var ids = items.map(function (item) {
+        that.got(item.id, {data: item})
+      })
+      that.got('starred', {ids: ids})
+    })
   },
+
   load: function (id, gens, npeople) {
     this.io.emit('get:pedigree', id, gens)
     this.io.emit('get:todos', id, npeople)
@@ -46,6 +62,7 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     person.data = data
     this.got(id, person)
   },
+
   setNote: function (id, text) {
     this.io.emit('set:note', id, text, function (person) {
       if (person) this.gotData(id, person)
