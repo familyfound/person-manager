@@ -80,6 +80,11 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
       if (person) this.gotData(id, person)
     }.bind(this))
   },
+  setTodoNote: function (id, type, key, val) {
+    this.io.emit('set:todo:note', id, type, key, val, function (person) {
+      if (person) this.gotData(id, person)
+    }.bind(this))
+  },
   setTodoDone: function (id, type, key, val) {
     this.io.emit('set:todo:done', id, type, key, val, function (person) {
       if (person) this.gotData(id, person)
