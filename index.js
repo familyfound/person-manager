@@ -64,6 +64,11 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
     this.got(id, person)
   },
 
+  setCustomTodos: function (id, todos) {
+    this.io.emit('set:custom-todos', id, todos, function (person) {
+      if (person) this.gotData(id, person)
+    }.bind(this))
+  },
   setNote: function (id, text) {
     this.io.emit('set:note', id, text, function (person) {
       if (person) this.gotData(id, person)
@@ -80,6 +85,7 @@ Manager.prototype = _.extend({}, BaseManager.prototype, {
       if (person) this.gotData(id, person)
     }.bind(this))
   },
+
   setTodoNote: function (id, type, key, val) {
     this.io.emit('set:todo:note', id, type, key, val, function (person) {
       if (person) this.gotData(id, person)
