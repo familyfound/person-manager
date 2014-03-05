@@ -2,7 +2,7 @@
   "name": "person-manager",
   "repo": "familyfound/person-manager",
   "description": "Manage the persons",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "keywords": [],
   "dependencies": {
     "notablemind/manager": "1.1.0",
